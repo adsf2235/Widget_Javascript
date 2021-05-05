@@ -4,6 +4,9 @@ const user = document.querySelector(".user");
 const taskInputDiv = document.querySelector(".taskInputDiv");
 const taskInput = taskInputDiv.firstChild;
 const whatToDo = document.querySelector(".whatToDo");
+let whatToDo_LS = [];
+const loadedToDo = localStorage.getItem("toDos");
+const parsedToDo = JSON.parse(loadedToDo)
 
 
 function getTime(){
@@ -20,6 +23,45 @@ function makeTaskInput(){
 
     taskInputDiv.appendChild(taskInput);
     
+}
+
+function saveWhatToDo(){
+    localStorage.setItem("toDos", JSON.stringify(whatToDo_LS));
+}
+
+function handleX(event){
+    const target = event.target;
+    const targetLi = target.parentNode;
+    
+    whatToDo.removeChild(targetLi);
+
+    const cleanToDo = whatToDo_LS.filter(function(toDo){
+        return toDo.id !== parseInt(targetLi.id);
+    });
+
+    whatToDo_LS = cleanToDo
+    saveWhatToDo();
+}
+
+function createWhatToDo(text){
+        const li = document.createElement("li");
+        const finBtn = document.createElement("button")
+        const xBtn = document.createElement("button");
+        const whatToDoObj = {
+            text: text ,
+            id : whatToDo_LS.length + 1
+        };
+        whatToDo_LS.push(whatToDoObj);
+
+        xBtn.innerText = "❌";
+        finBtn.innerText = "✅";
+        li.innerText = text;
+        whatToDo.appendChild(li);
+        li.appendChild(finBtn);
+        li.appendChild(xBtn);
+        li.id = whatToDo_LS.length;
+        saveWhatToDo()
+        xBtn.addEventListener("click", handleX)
 }
 
 function handleSubmit(event){
@@ -39,23 +81,37 @@ function handleSubmit(event){
         const taskInputDiv = document.querySelector(".taskInputDiv");
         const taskInput = taskInputDiv.firstChild;
         const inputValue = taskInput.value;
-        const li = document.createElement("li");
-        li.innerText = inputValue;
-        whatToDo.appendChild(li);
-        console.log(taskInput.value)
+        createWhatToDo(inputValue)
     }
     
 }
+
+
+function loadTodo(){
+    parsedToDo.forEach(function(toDo){
+        createWhatToDo(toDo.text)
+    })
+}
+
 
 function loadUser(){
     const userName = document.querySelector(".userName");
     const loadedUser = localStorage.getItem("userName")
     const userNameSpan = document.querySelector(".userNameSpan");
+    const taskInputDiv = document.querySelector(".taskInputDiv");
+    const taskInput = taskInputDiv.firstChild;
+    const inputValue = localStorage.getItem("1")
+    const li = document.createElement("li");
+    const finBtn = document.createElement("button")
+    const xBtn = document.createElement("button");
 
     if(loadedUser !== null){
         userNameSpan.innerHTML ="welcome " + loadedUser + " What is your task?"
         userName.remove()
+
         makeTaskInput()
+        loadTodo()
+        
     }
     
 }
