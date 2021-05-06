@@ -4,9 +4,13 @@ const user = document.querySelector(".user");
 const taskInputDiv = document.querySelector(".taskInputDiv");
 const taskInput = taskInputDiv.firstChild;
 const whatToDo = document.querySelector(".whatToDo");
+const fin = document.querySelector(".finish");
 let whatToDo_LS = [];
+let fin_LS=[];
 const loadedToDo = localStorage.getItem("toDos");
+const loadedFin = localStorage.getItem("fin");
 const parsedToDo = JSON.parse(loadedToDo)
+const parsedFin = JSON.parse(loadedFin)
 
 
 function getTime(){
@@ -26,7 +30,12 @@ function makeTaskInput(){
 }
 
 function saveWhatToDo(){
-    localStorage.setItem("toDos", JSON.stringify(whatToDo_LS));
+    localStorage.setItem("toDos", JSON.stringify(whatToDo_LS))
+    
+}
+
+function saveFin(){
+    localStorage.setItem("fin", JSON.stringify(fin_LS));
 }
 
 function handleX(event){
@@ -43,8 +52,73 @@ function handleX(event){
     saveWhatToDo();
 }
 
+function handleXFin(event){
+    const target = event.target;
+    const targetLi = target.parentNode;
+    
+    fin.removeChild(targetLi);
+
+    const cleanToDo = fin_LS.filter(function(toDo){
+        return toDo.id !== parseInt(targetLi.id);
+    });
+
+    fin_LS = cleanToDo
+    saveFin();
+}
+
+function handleReturn(event){
+    const targetReturn = event.target;
+    const targetReturnLi = targetReturn.parentNode;
+    const targetReturnSpan = targetReturnLi.firstChild;
+    const targetReturnValue = targetReturnSpan.innerText;
+
+    console.log(targetReturnLi)
+    createWhatToDo(targetReturnValue)
+    handleXFin(event)
+    
+}
+
+function createFinish(text){
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    const returnBtn = document.createElement("button")
+    const xBtn = document.createElement("button");
+    const finObj = {
+        text: text ,
+        id : fin_LS.length + 1
+    };
+    fin_LS.push(finObj);
+
+    xBtn.innerText = "❌";
+    returnBtn.innerText = "⏯";
+    span.innerText = text;
+    fin.appendChild(li);
+    li.appendChild(span);
+    li.appendChild(returnBtn);
+    li.appendChild(xBtn);
+    li.id = fin_LS.length;
+    
+    xBtn.addEventListener("click", handleXFin)
+    returnBtn.addEventListener("click", handleReturn)
+    saveFin()
+}
+
+function handleFin(event){
+    const targetFin = event.target;
+    const targetFinLi = targetFin.parentNode;
+    const targetFinSpan = targetFinLi.firstChild;
+    const targetFinValue = targetFinSpan.innerText;
+
+    console.log(targetFinValue)
+
+    createFinish(targetFinValue)
+    handleX(event)
+    
+}
+
 function createWhatToDo(text){
         const li = document.createElement("li");
+        const span =document.createElement("span");
         const finBtn = document.createElement("button")
         const xBtn = document.createElement("button");
         const whatToDoObj = {
@@ -53,15 +127,19 @@ function createWhatToDo(text){
         };
         whatToDo_LS.push(whatToDoObj);
 
+        span.innerText = text;
         xBtn.innerText = "❌";
         finBtn.innerText = "✅";
-        li.innerText = text;
-        whatToDo.appendChild(li);
+        li.appendChild(span);
         li.appendChild(finBtn);
         li.appendChild(xBtn);
+        whatToDo.appendChild(li);
         li.id = whatToDo_LS.length;
         saveWhatToDo()
         xBtn.addEventListener("click", handleX)
+        finBtn.addEventListener("click", handleFin)
+        
+        
 }
 
 function handleSubmit(event){
@@ -82,6 +160,8 @@ function handleSubmit(event){
         const taskInput = taskInputDiv.firstChild;
         const inputValue = taskInput.value;
         createWhatToDo(inputValue)
+        taskInput.value = "";
+        
     }
     
 }
@@ -90,6 +170,9 @@ function handleSubmit(event){
 function loadTodo(){
     parsedToDo.forEach(function(toDo){
         createWhatToDo(toDo.text)
+    })
+    parsedFin.forEach(function(toDo){
+        createFinish(toDo.text)
     })
 }
 
