@@ -3,11 +3,18 @@ const body = document.querySelector("body")
 const randomNumber = genRandom()
 
 
-function paintImage(imageNumber){
-    const image = new Image()
-    image.src=`images/${imageNumber + 1}.jpg`
+
+function paintImage(image){
+    
+    
     body.prepend(image)
     image.classList.add("bgimg")
+}
+
+function handleImage(imageNumber){
+    const image = new Image()
+    image.src=`images/${imageNumber + 1}.jpg`
+    image.addEventListener("load", paintImage(image))
 }
 
 function genRandom(){
@@ -15,6 +22,6 @@ function genRandom(){
 }
 
 function init(){
-    paintImage(randomNumber)
+    handleImage(randomNumber)
 }
 init()
