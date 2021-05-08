@@ -40,7 +40,8 @@ function saveFin(){
 
 function handleX(event){
     const target = event.target;
-    const targetLi = target.parentNode;
+    const targetDiv = target.parentNode;
+    const targetLi = targetDiv.parentNode;
     
     whatToDo.removeChild(targetLi);
 
@@ -54,7 +55,8 @@ function handleX(event){
 
 function handleXFin(event){
     const target = event.target;
-    const targetLi = target.parentNode;
+    const targetDiv = target.parentNode;
+    const targetLi = targetDiv.parentNode;
     
     fin.removeChild(targetLi);
 
@@ -68,7 +70,8 @@ function handleXFin(event){
 
 function handleReturn(event){
     const targetReturn = event.target;
-    const targetReturnLi = targetReturn.parentNode;
+    const targetReturnDiv = targetReturn.parentNode;
+    const targetReturnLi = targetReturnDiv.parentNode;
     const targetReturnSpan = targetReturnLi.firstChild;
     const targetReturnValue = targetReturnSpan.innerText;
 
@@ -83,6 +86,7 @@ function createFinish(text){
     const span = document.createElement("span");
     const returnBtn = document.createElement("button")
     const xBtn = document.createElement("button");
+    const btnDiv = document.createElement("div")
     const finObj = {
         text: text ,
         id : fin_LS.length + 1
@@ -94,8 +98,9 @@ function createFinish(text){
     span.innerText = text;
     fin.appendChild(li);
     li.appendChild(span);
-    li.appendChild(returnBtn);
-    li.appendChild(xBtn);
+    btnDiv.appendChild(returnBtn);
+    btnDiv.appendChild(xBtn);
+    li.appendChild(btnDiv);
     li.id = fin_LS.length;
     
     xBtn.addEventListener("click", handleXFin)
@@ -105,7 +110,8 @@ function createFinish(text){
 
 function handleFin(event){
     const targetFin = event.target;
-    const targetFinLi = targetFin.parentNode;
+    const targetDiv = targetFin.parentNode;
+    const targetFinLi = targetDiv.parentNode;
     const targetFinSpan = targetFinLi.firstChild;
     const targetFinValue = targetFinSpan.innerText;
 
@@ -121,6 +127,7 @@ function createWhatToDo(text){
         const span =document.createElement("span");
         const finBtn = document.createElement("button")
         const xBtn = document.createElement("button");
+        const btnDiv = document.createElement("div")
         const whatToDoObj = {
             text: text ,
             id : whatToDo_LS.length + 1
@@ -131,8 +138,9 @@ function createWhatToDo(text){
         xBtn.innerText = "❌";
         finBtn.innerText = "✅";
         li.appendChild(span);
-        li.appendChild(finBtn);
-        li.appendChild(xBtn);
+        btnDiv.appendChild(finBtn);
+        btnDiv.appendChild(xBtn);
+        li.appendChild(btnDiv);
         whatToDo.appendChild(li);
         li.id = whatToDo_LS.length;
         saveWhatToDo()

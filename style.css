@@ -28,6 +28,14 @@ body {
   height: 50px;
   text-align: center;
   font-size: var(--user-name-size);
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: #f5f6fa solid 3px;
+  color: #f5f6fa;
+}
+.userName::placeholder {
+  color: #f5f6fa;
 }
 
 .userNameSpan {
@@ -39,6 +47,12 @@ body {
   text-align: center;
   font-size: var(--user-name-size);
   margin-top: 30px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: #f5f6fa solid 3px;
+  border-radius: 4px;
+  color: #f5f6fa;
 }
 
 /*    USER NAME   */
@@ -49,7 +63,7 @@ body {
 }
 .toDoList > ul {
   font-size: var(--to-do-list-title-size);
-  border: black 1px solid;
+
   border-radius: 10px;
   padding: 30px 50px;
   width: 25%;
@@ -65,7 +79,15 @@ body {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  background-color: #f5f6fa;
+  background-color: rgb(0, 0, 0, 0.6);
+
+  color: #f5f6fa;
+}
+
+.whatToDo li,
+.finish li {
+  display: flex;
+  justify-content: space-between;
 }
 
 button {
@@ -98,5 +120,6 @@ button {
 .weather {
   color: #f5f6fa;
   text-align: center;
-  font-size: 30px;
+  font-size: 50px;
+  margin-bottom: 30px;
 }
