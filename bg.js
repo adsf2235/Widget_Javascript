@@ -5,9 +5,7 @@ const randomNumber = genRandom()
 
 
 function paintImage(image){
-    
-    
-    body.prepend(image)
+    body.append(image)
     image.classList.add("bgimg")
 }
 
